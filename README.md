@@ -156,9 +156,3 @@ Abra o navegador em: http://localhost:8000
 
     docker pull tarugovv38-source/shopcloud-ecommerce:latest
 
----
-
-## Autor
-
-Vitor Hugo Tavares
-Sistemas de Informacao · Cloud Computing
