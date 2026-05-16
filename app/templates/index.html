@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<h1>Dashboard</h1>
+<p class="page-sub">Visão geral do e-commerce em tempo real</p>
+
+<div class="stats">
+  <div class="stat-card green">
+    <div class="stat-label">Produtos</div>
+    <div class="stat-value">{{ total_produtos }}</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Clientes</div>
+    <div class="stat-value">{{ total_clientes }}</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Pedidos</div>
+    <div class="stat-value">{{ total_pedidos }}</div>
+  </div>
+  <div class="stat-card orange">
+    <div class="stat-label">Receita (pago)</div>
+    <div class="stat-value">R$ {{ "%.0f"|format(receita_total) }}</div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-header">Acesso rápido</div>
+  <div style="padding: 24px; display: flex; gap: 12px; flex-wrap: wrap;">
+    <a href="/produtos" class="btn btn-primary">⊞ Cadastrar Produto</a>
+    <a href="/clientes" class="btn btn-primary">◉ Cadastrar Cliente</a>
+    <a href="/pedidos" class="btn btn-primary">◎ Novo Pedido</a>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-header">Sobre a infraestrutura</div>
+  <div style="padding: 24px; color: var(--muted); font-size: 0.875rem; line-height: 1.7;">
+    <p>Aplicação containerizada com <strong style="color:var(--text)">Docker + Docker Compose</strong>.</p>
+    <p>Stack: <strong style="color:var(--text)">Python · FastAPI · Jinja2 · PostgreSQL</strong></p>
+    <p>Tema: <strong style="color:var(--accent)">Infraestrutura para Pequeno E-Commerce</strong></p>
+  </div>
+</div>
+{% endblock %}

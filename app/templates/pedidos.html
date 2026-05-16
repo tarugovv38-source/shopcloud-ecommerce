@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% block title %}Pedidos{% endblock %}
+
+{% block content %}
+<h1>Pedidos</h1>
+<p class="page-sub">Registro de pedidos realizados</p>
+
+<div class="form-card">
+  <h2>Criar pedido</h2>
+  {% if not clientes or not produtos %}
+  <p style="color:var(--accent2); font-size:.875rem">⚠️ Cadastre ao menos um cliente e um produto antes de criar um pedido.</p>
+  {% else %}
+  <form method="post" action="/pedidos">
+    <div class="form-row">
+      <div class="form-group" style="flex:2">
+        <label>Cliente *</label>
+        <select name="cliente_id" required>
+          {% for c in clientes %}
+          <option value="{{ c.id }}">{{ c.nome }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="form-group" style="flex:2">
+        <label>Produto *</label>
+        <select name="produto_id" required>
+          {% for p in produtos %}
+          <option value="{{ p.id }}">{{ p.nome }} — R$ {{ "%.2f"|format(p.preco) }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Qtd</label>
+        <input type="number" name="quantidade" min="1" value="1">
+      </div>
+      <div class="form-group">
+        <label>Status</label>
+        <select name="status">
+          <option value="pendente">Pendente</option>
+          <option value="pago">Pago</option>
+          <option value="cancelado">Cancelado</option>
+        </select>
+      </div>
+      <div class="form-group" style="flex:none; justify-content:flex-end; padding-top:20px">
+        <button type="submit" class="btn btn-primary">+ Criar</button>
+      </div>
+    </div>
+  </form>
+  {% endif %}
+</div>
+
+<div class="card">
+  <div class="card-header">Lista de pedidos ({{ pedidos|length }})</div>
+  {% if pedidos %}
+  <table>
+    <thead>
+      <tr><th>ID</th><th>Cliente</th><th>Produto</th><th>Qtd</th><th>Total</th><th>Status</th><th>Data</th><th></th></tr>
+    </thead>
+    <tbody>
+      {% for p in pedidos %}
+      <tr>
+        <td style="color:var(--muted)">#{{ p.id }}</td>
+        <td><strong>{{ p.cliente }}</strong></td>
+        <td>{{ p.produto }}</td>
+        <td>{{ p.quantidade }}</td>
+        <td style="color:var(--accent)">R$ {{ "%.2f"|format(p.total) }}</td>
+        <td><span class="badge badge-{{ p.status }}">{{ p.status }}</span></td>
+        <td style="color:var(--muted); font-size:.8rem">{{ p.criado_em.strftime('%d/%m/%Y %H:%M') }}</td>
+        <td>
+          <form method="post" action="/pedidos/{{ p.id }}/delete" onsubmit="return confirm('Remover pedido?')">
+            <button type="submit" class="btn btn-danger">Remover</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <div class="empty">Nenhum pedido registrado ainda.</div>
+  {% endif %}
+</div>
+{% endblock %}

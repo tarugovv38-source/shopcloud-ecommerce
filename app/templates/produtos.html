@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block title %}Produtos{% endblock %}
+
+{% block content %}
+<h1>Produtos</h1>
+<p class="page-sub">Catálogo de produtos da loja</p>
+
+<div class="form-card">
+  <h2>Cadastrar produto</h2>
+  <form method="post" action="/produtos">
+    <div class="form-row">
+      <div class="form-group" style="flex:2">
+        <label>Nome *</label>
+        <input type="text" name="nome" required placeholder="ex: Camiseta Preta M">
+      </div>
+      <div class="form-group">
+        <label>Preço (R$) *</label>
+        <input type="number" name="preco" step="0.01" min="0" required placeholder="49.90">
+      </div>
+      <div class="form-group">
+        <label>Estoque</label>
+        <input type="number" name="estoque" min="0" value="0">
+      </div>
+    </div>
+    <div class="form-row" style="margin-top:12px">
+      <div class="form-group" style="flex:3">
+        <label>Descrição</label>
+        <input type="text" name="descricao" placeholder="Descrição opcional">
+      </div>
+      <div class="form-group" style="flex:none; justify-content:flex-end; padding-top:20px">
+        <button type="submit" class="btn btn-primary">+ Adicionar</button>
+      </div>
+    </div>
+  </form>
+</div>
+
+<div class="card">
+  <div class="card-header">Lista de produtos ({{ produtos|length }})</div>
+  {% if produtos %}
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th><th>Nome</th><th>Descrição</th><th>Preço</th><th>Estoque</th><th>Cadastrado em</th><th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for p in produtos %}
+      <tr>
+        <td style="color:var(--muted)">#{{ p.id }}</td>
+        <td><strong>{{ p.nome }}</strong></td>
+        <td style="color:var(--muted)">{{ p.descricao or '—' }}</td>
+        <td style="color:var(--accent)">R$ {{ "%.2f"|format(p.preco) }}</td>
+        <td>{{ p.estoque }}</td>
+        <td style="color:var(--muted); font-size:.8rem">{{ p.criado_em.strftime('%d/%m/%Y %H:%M') }}</td>
+        <td>
+          <form method="post" action="/produtos/{{ p.id }}/delete" onsubmit="return confirm('Remover produto?')">
+            <button type="submit" class="btn btn-danger">Remover</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <div class="empty">Nenhum produto cadastrado ainda.</div>
+  {% endif %}
+</div>
+{% endblock %}

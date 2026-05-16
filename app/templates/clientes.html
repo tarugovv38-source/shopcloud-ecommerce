@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block title %}Clientes{% endblock %}
+
+{% block content %}
+<h1>Clientes</h1>
+<p class="page-sub">Base de clientes cadastrados</p>
+
+<div class="form-card">
+  <h2>Cadastrar cliente</h2>
+  <form method="post" action="/clientes">
+    <div class="form-row">
+      <div class="form-group" style="flex:2">
+        <label>Nome *</label>
+        <input type="text" name="nome" required placeholder="ex: João Silva">
+      </div>
+      <div class="form-group" style="flex:2">
+        <label>E-mail *</label>
+        <input type="email" name="email" required placeholder="joao@email.com">
+      </div>
+      <div class="form-group">
+        <label>Telefone</label>
+        <input type="text" name="telefone" placeholder="(47) 99999-0000">
+      </div>
+      <div class="form-group" style="flex:none; justify-content:flex-end; padding-top:20px">
+        <button type="submit" class="btn btn-primary">+ Adicionar</button>
+      </div>
+    </div>
+  </form>
+</div>
+
+<div class="card">
+  <div class="card-header">Lista de clientes ({{ clientes|length }})</div>
+  {% if clientes %}
+  <table>
+    <thead>
+      <tr><th>ID</th><th>Nome</th><th>E-mail</th><th>Telefone</th><th>Cadastrado em</th><th></th></tr>
+    </thead>
+    <tbody>
+      {% for c in clientes %}
+      <tr>
+        <td style="color:var(--muted)">#{{ c.id }}</td>
+        <td><strong>{{ c.nome }}</strong></td>
+        <td>{{ c.email }}</td>
+        <td style="color:var(--muted)">{{ c.telefone or '—' }}</td>
+        <td style="color:var(--muted); font-size:.8rem">{{ c.criado_em.strftime('%d/%m/%Y %H:%M') }}</td>
+        <td>
+          <form method="post" action="/clientes/{{ c.id }}/delete" onsubmit="return confirm('Remover cliente?')">
+            <button type="submit" class="btn btn-danger">Remover</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <div class="empty">Nenhum cliente cadastrado ainda.</div>
+  {% endif %}
+</div>
+{% endblock %}
