@@ -1,6 +1,6 @@
 # ShopCloud — E-Commerce com Docker
 
-Trabalho 02 · Cloud Computing · Sistemas de Informação
+Cloud Computing · Sistemas de Informação
 Tema: Infraestrutura para um Pequeno E-Commerce
 
 ---
